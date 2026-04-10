@@ -1,0 +1,24 @@
+# Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+flutter_export_environment.sh
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# iOS
+**/Pods/
+**/DerivedData/
+
+# Android
+**/local.properties
+**/.gradle/
+**/captures/
+
+# Misc
+.DS_Store

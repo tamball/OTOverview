@@ -1,0 +1,5 @@
+{
+  "bookId": "_placeholder",
+  "note": "占位檔：各章經文待以 scripts/import_bible_text.py 或手動匯入後取代。",
+  "chapters": {}
+}

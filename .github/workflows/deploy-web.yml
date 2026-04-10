@@ -1,0 +1,47 @@
+# 將 Flutter Web 部署到 GitHub Pages（專案網址：https://<用戶名>.github.io/<儲存庫名>/）
+# 儲存庫：Settings → Pages → Build and deployment → Source：GitHub Actions
+
+name: Deploy Web to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+      # 與 GitHub Pages「專案站」路徑一致；若儲存庫是 <用戶名>.github.io 則改為 --base-href /
+      - run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
